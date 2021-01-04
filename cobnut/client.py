@@ -33,6 +33,12 @@ class Cobnut():
 
     def get(self, *, key: str):
         return self.store.get(key=key)
+    
+    def clean_key(self, *, key: str):
+        def decorator(func):
+            def wrapper(*args,**kwargs):
+                return func(*args,**kwargs)
+            return wrapper
+        return decorator
 
 cobnut = Cobnut(redis_connection=RedisModel(host="localhost"))
-# cobnut.set(key='test', data=)

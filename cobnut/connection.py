@@ -1,4 +1,4 @@
-from json import dumps
+from json import dumps, loads
 from redis import Redis
 
 
@@ -51,5 +51,12 @@ class RedisConnection():
             data_convert['data'] = data
         return dumps(data_convert)
 
+
     def get(self, *, key: str):
-        return self.client.get(key)
+        if not self.client.get(key): return None
+        data_convert = self.client.get(key).decode('utf-8')
+        data_json = loads(data_convert)
+        if data_json['type'] in ['str','int','float','bytes']:
+            return data_json['data']
+        elif data_json['type'] in ['list','tuple','dict']:
+            return loads(data_json['data'])
