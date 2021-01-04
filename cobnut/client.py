@@ -1,4 +1,4 @@
-from typing import Union, Dict, List, Optional
+from typing import Union, Dict, List, Tuple, Optional
 from connection import RedisConnection
 from schemas.redis import RedisModel
 
@@ -12,7 +12,7 @@ class Cobnut():
 
     def create_store(self):
         if self.redis_connection:
-            store = self.redis_conn
+            store = self.redis_conn()
             return store
 
 
@@ -20,12 +20,19 @@ class Cobnut():
         r = RedisConnection(
             host=self.redis_connection.host
         )
-        r.ping()
+        r.test_connection()
         return r
 
 
-    def set(self, *, key: str, data: Union[str, int, Dict, List]):
-        self.store().set(key=key, data=data)
+    def set(self, *, key: str, data: Union[
+        str, int, Dict, List, float, 
+        bytes, Tuple
+    ]):
+        self.store.set(key=key, data=data)
+
+
+    def get(self, *, key: str):
+        return self.store.get(key=key)
 
 cobnut = Cobnut(redis_connection=RedisModel(host="localhost"))
-cobnut.set(key='la', data='lala')
+# cobnut.set(key='test', data=)

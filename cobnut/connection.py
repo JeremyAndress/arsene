@@ -1,3 +1,4 @@
+from json import dumps
 from redis import Redis
 
 
@@ -23,9 +24,32 @@ class RedisConnection():
         )
 
 
-    def ping(self):
+    def test_connection(self):
         self.client.ping()
+        self.status = True
 
 
-    def set(self, *, key, data):
-        self.client.set(key, data)
+    def set(self, *, key: str, data):
+        data_convert = self.set_data(data)
+        self.client.set(key, data_convert)
+
+
+    def set_data(self, data):
+        data_convert = {
+            'type': type(data).__name__,
+            'data': None 
+        }
+        if (
+            isinstance(data, list) or isinstance(data, dict) or
+            isinstance(data, tuple)
+        ):
+            data_convert['data'] = dumps(data)
+        elif (
+            isinstance(data, str) or isinstance(data, int) or 
+            isinstance(data, float) or isinstance(data, bytes)
+        ):
+            data_convert['data'] = data
+        return dumps(data_convert)
+
+    def get(self, *, key: str):
+        return self.client.get(key)
