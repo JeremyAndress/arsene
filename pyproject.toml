@@ -4,6 +4,9 @@ version = "0.1.0"
 description = "Easy data cache management"
 readme = "README.md"
 authors = ["JeremyAndress <jeremysilvasilva@gmail.com>"]
+license = "MIT"
+homepage = "https://github.com/JeremyAndress/cobnut"
+repository = "https://github.com/JeremyAndress/cobnut"
 
 [tool.poetry.dependencies]
 python = "^3.6"
