@@ -1,6 +1,6 @@
 from typing import Union, Dict, List, Tuple, Optional
-from connection import RedisConnection
-from schemas.redis import RedisModel
+from cobnut.connection import RedisConnection
+from cobnut.schemas.redis import RedisModel
 
 class Cobnut():
     def __init__(
@@ -40,5 +40,3 @@ class Cobnut():
                 return func(*args,**kwargs)
             return wrapper
         return decorator
-
-cobnut = Cobnut(redis_connection=RedisModel(host="localhost"))
