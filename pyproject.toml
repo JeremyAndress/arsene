@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cobnut"
-version = "0.1.0"
+version = "0.1.1"
 description = "Easy data cache management"
 readme = "README.md"
 authors = ["JeremyAndress <jeremysilvasilva@gmail.com>"]
@@ -10,11 +10,12 @@ repository = "https://github.com/JeremyAndress/cobnut"
 
 [tool.poetry.dependencies]
 python = "^3.6"
-redis = "^3.5.3"
 pydantic = "^1.7.3"
+redis = {version = "^3.5.3", optional = true}
 
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.1"
+flake8 = "^3.8.4"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
