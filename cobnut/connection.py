@@ -54,9 +54,15 @@ class RedisConnection():
 
     def get(self, *, key: str):
         if not self.client.get(key): return None
+
         data_convert = self.client.get(key).decode('utf-8')
         data_json = loads(data_convert)
+
         if data_json['type'] in ['str','int','float','bytes']:
             return data_json['data']
+            
         elif data_json['type'] in ['list','tuple','dict']:
             return loads(data_json['data'])
+    
+    def delete(self, *, key: str):
+        self.client.delete(key)

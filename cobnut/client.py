@@ -1,5 +1,4 @@
 from typing import Union, Dict, List, Tuple, Optional
-from cobnut.connection import RedisConnection
 from cobnut.schemas.redis import RedisModel
 
 class Cobnut():
@@ -17,6 +16,7 @@ class Cobnut():
 
 
     def redis_conn(self):
+        from cobnut.connection import RedisConnection
         r = RedisConnection(
             host=self.redis_connection.host
         )
@@ -33,8 +33,14 @@ class Cobnut():
 
     def get(self, *, key: str):
         return self.store.get(key=key)
+
+
+    def delete(self, *, key: str):
+        return self.store.delete(key=key)
     
+
     def clean_key(self, *, key: str):
+        self.delete(key=key)
         def decorator(func):
             def wrapper(*args,**kwargs):
                 return func(*args,**kwargs)
