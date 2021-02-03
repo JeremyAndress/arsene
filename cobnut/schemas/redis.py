@@ -9,6 +9,5 @@ class RedisModel(BaseModel):
     password: Optional[str] = None
     socket_connect_timeout: int = 1
 
-
     class Config:
         orm_mode = True

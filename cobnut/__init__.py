@@ -1,4 +1,4 @@
-__version__ = '0.1.1'
+from .client import Cobnut # noqa F401
+from .schemas.redis import RedisModel # noqa F401
 
-from .client import Cobnut
-from .schemas.redis import RedisModel
+__version__ = '0.1.1'
