@@ -1,4 +1,5 @@
 from json import dumps, loads
+from typing import Optional
 from redis import Redis
 
 
@@ -26,9 +27,9 @@ class RedisConnection():
         self.client.ping()
         self.status = True
 
-    def set(self, *, key: str, data):
+    def set(self, *, key: str, expire: Optional[int] = None, data):
         data_convert = self.set_data(data)
-        self.client.set(key, data_convert)
+        self.client.set(key, data_convert, ex=expire)
 
     def set_data(self, data):
         data_convert = {
