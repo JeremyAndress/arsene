@@ -32,21 +32,24 @@ jobs:
         flake8 . --count --exit-zero
   
   testing:
+    needs: install
     runs-on: ubuntu-latest
     strategy:
       matrix:
         python-version: [ 3.6, 3.7, 3.8 ]
         redis-version: [4, 5, 6]
     steps:
-    - name: Start Redis
-    - uses: supercharge/redis-github-action@1.2.0
-      with:
-        redis-version: ${{ matrix.redis-version }}
     - uses: actions/checkout@v2
     - name: Set up Python ${{ matrix.python-version }}
       uses: actions/setup-python@v2
       with:
         python-version: ${{ matrix.python-version }}
+  
+    - name: Start Redis
+      uses: supercharge/redis-github-action@1.2.0
+      with:
+        redis-version: ${{ matrix.redis-version }}
+
     - name: Test with pytest
       run: |
         pytest -vs test/
