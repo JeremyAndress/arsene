@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "cobnut"
-version = "0.1.1"
+version = "0.1.2"
 description = "Easy data cache management"
 readme = "README.md"
 authors = ["JeremyAndress <jeremysilvasilva@gmail.com>"]
