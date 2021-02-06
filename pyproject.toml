@@ -17,6 +17,9 @@ redis = {version = "^3.5.3", optional = true}
 pytest = "^6.2.1"
 flake8 = "^3.8.4"
 
+[tool.poetry.extras]
+caching = ["redis"]
+
 [build-system]
 requires = ["poetry-core>=1.0.0"]
 build-backend = "poetry.core.masonry.api"
