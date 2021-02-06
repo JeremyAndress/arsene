@@ -56,4 +56,7 @@ jobs:
 
     - name: Test with pytest
       run: |
+        pip freeze
+        poetry config virtualenvs.create false --local
+        pip freeze
         pytest -vs test/
