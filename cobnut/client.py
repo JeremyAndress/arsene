@@ -1,6 +1,7 @@
 from functools import wraps
 from typing import Union, Dict, List, Tuple, Optional
 from cobnut.schemas.redis import RedisModel
+from cobnut.key_builder import generate_key
 
 
 class Cobnut():
@@ -50,18 +51,29 @@ class Cobnut():
             return wrapper
         return decorator
 
-    def cache(self, *, key: str, expire: Optional[int] = None, check_params: bool = False):
+    def cache(
+        self, *, key: str, expire: Optional[int] = None, check_params: bool = False,
+        kwargs_list: Optional[List] = None, check_args_params: bool = False,
+        check_kwargs_params: bool = False
+    ):
         def decorator(func):
             @wraps(func)
             def wrapper(*args, **kwargs):
-                if check_params:
-                    name = f"{key}-{args}-{kwargs}"
-                elif check_params is None:
-                    name = key
+                name = generate_key(
+                    key=key, args=args, kwargs=kwargs,
+                    kwargs_list=kwargs_list, check_params=check_params,
+                    check_args_params=check_args_params,
+                    check_kwargs_params=check_kwargs_params
+                )
                 key_data = self.get(key=name)
                 if key_data:
+                    print('keyyyy')
                     return key_data
                 elif key_data is None:
-                    return func(*args, **kwargs)
+                    print('keeey notttt')
+                    ex = expire if expire else self.global_expire
+                    response = func(*args, **kwargs)
+                    self.set(key=name, data=response, expire=ex)
+                    return response
             return wrapper
         return decorator

@@ -1,6 +1,7 @@
-from json import dumps, loads
+from json import loads
 from typing import Optional
 from redis import Redis
+from .data_convert import set_data
 
 
 class RedisConnection():
@@ -28,25 +29,8 @@ class RedisConnection():
         self.status = True
 
     def set(self, *, key: str, expire: Optional[int] = None, data):
-        data_convert = self.set_data(data)
+        data_convert = set_data(data)
         self.client.set(key, data_convert, ex=expire)
-
-    def set_data(self, data):
-        data_convert = {
-            'type': type(data).__name__,
-            'data': None
-        }
-        if (
-            isinstance(data, list) or isinstance(data, dict) or
-            isinstance(data, tuple)
-        ):
-            data_convert['data'] = dumps(data)
-        elif (
-            isinstance(data, str) or isinstance(data, int) or
-            isinstance(data, float) or isinstance(data, bytes)
-        ):
-            data_convert['data'] = data
-        return dumps(data_convert)
 
     def get(self, *, key: str):
         if not self.client.get(key):
