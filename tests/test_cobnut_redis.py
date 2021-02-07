@@ -22,7 +22,7 @@ class CobnutTestCase(TestCase):
         self.cobnut.set(key='test', data='test_expire', expire=1)
         assert self.cobnut.get(key='test') == 'test_expire'
         time.sleep(1)
-        assert self.cobnut.get(key='test') == None
+        assert self.cobnut.get(key='test') is None
 
     def test_decorator_params(self):
         def without_decorator(data):
@@ -35,3 +35,9 @@ class CobnutTestCase(TestCase):
         assert list(
             inspect.signature(get_decorator).parameters.keys()
         ) == data
+
+    def test_decorator_return(self):
+        @self.cobnut.cache(key='test', check_params=True)
+        def test_cache(pk, data='data'):
+            return data
+        test_cache(1)
