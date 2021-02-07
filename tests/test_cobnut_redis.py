@@ -1,5 +1,6 @@
 import time
 import inspect
+from datetime import datetime
 from unittest import TestCase
 from cobnut import __version__, Cobnut, RedisModel
 
@@ -37,7 +38,21 @@ class CobnutTestCase(TestCase):
         ) == data
 
     def test_decorator_return(self):
-        @self.cobnut.cache(key='test', check_params=True)
-        def test_cache(pk, data='data'):
-            return data
-        test_cache(1)
+        @self.cobnut.cache(
+            key='test_cache', check_kwargs_params=True,
+            check_args_params=True, kwargs_list=['data'],
+            expire=2
+        )
+        def cache(pk, data='data', extra='extra_data'):
+            return {'now': datetime.now().strftime("%m/%d/%Y, %H:%M:%S")}
+        response = cache(1, data=[1, 4, 5], extra='extra_data')
+
+        assert cache(
+            1, data=[1, 4, 5], extra='extra_data'
+        ) == response
+
+        time.sleep(2)
+
+        assert cache(
+            1, data=[1, 4, 5], extra='extra_data'
+        ) != response
