@@ -44,7 +44,7 @@ jobs:
 
     - name: Test with pytest
       run: |
-        pytest -vs test/  
+        pytest -vs tests/
 
   # testing:
   #   needs: install
