@@ -32,7 +32,7 @@ class Cobnut():
         bytes, Tuple
     ]):
         ex = expire if expire else self.global_expire
-        self.store.set(key=key, expire=ex,data=data)
+        self.store.set(key=key, expire=ex, data=data)
 
     def get(self, *, key: str):
         return self.store.get(key=key)
@@ -50,10 +50,18 @@ class Cobnut():
             return wrapper
         return decorator
 
-    def cache(self, *, key: str, expire: Optional[int] = None, check_params:bool = False):
+    def cache(self, *, key: str, expire: Optional[int] = None, check_params: bool = False):
         def decorator(func):
             @wraps(func)
             def wrapper(*args, **kwargs):
-                return func(*args, **kwargs)
+                if check_params:
+                    name = f"{key}-{args}-{kwargs}"
+                elif check_params is None:
+                    name = key
+                key_data = self.get(key=name)
+                if key_data:
+                    return key_data
+                elif key_data is None:
+                    return func(*args, **kwargs)
             return wrapper
         return decorator
