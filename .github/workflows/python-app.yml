@@ -34,7 +34,7 @@ jobs:
         python -m pip install --upgrade pip
         pip install poetry
         poetry config virtualenvs.create false --local
-        poetry install -E caching
+        poetry install -E redis
     - name: Check dependencies
       run: |
         pip freeze
