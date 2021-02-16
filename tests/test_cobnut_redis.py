@@ -2,16 +2,13 @@ import time
 import inspect
 from datetime import datetime
 from unittest import TestCase
-from cobnut import __version__, Cobnut, RedisModel
+from cobnut import Cobnut, RedisModel
 
 
 class CobnutTestCase(TestCase):
 
     def setUp(self):
-        self.cobnut = Cobnut(redis_connection=RedisModel(host="localhost"))
-
-    def test_version(self):
-        assert __version__ == '0.1.2'
+        self.cobnut = Cobnut(redis_connection=RedisModel(host="10.46.0.160", port=6381))
 
     def test_set(self):
         self.cobnut.set(key='test', data='test')
