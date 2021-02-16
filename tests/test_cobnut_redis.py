@@ -8,7 +8,7 @@ from cobnut import Cobnut, RedisModel
 class CobnutTestCase(TestCase):
 
     def setUp(self):
-        self.cobnut = Cobnut(redis_connection=RedisModel(host="10.46.0.160", port=6381))
+        self.cobnut = Cobnut(redis_connection=RedisModel(host="localhost"))
 
     def test_set(self):
         self.cobnut.set(key='test', data='test')
