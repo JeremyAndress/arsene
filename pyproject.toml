@@ -16,9 +16,10 @@ redis = {version = "^3.5.3", optional = true}
 [tool.poetry.dev-dependencies]
 pytest = "^6.2.1"
 flake8 = "^3.8.4"
+flake8-print = "^4.0.0"
 
 [tool.poetry.extras]
-caching = ["redis"]
+redis = ["redis"]
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

@@ -67,10 +67,8 @@ class Cobnut():
                 )
                 key_data = self.get(key=name)
                 if key_data:
-                    print('keyyyy')
                     return key_data
                 elif key_data is None:
-                    print('keeey notttt')
                     ex = expire if expire else self.global_expire
                     response = func(*args, **kwargs)
                     self.set(key=name, data=response, expire=ex)
