@@ -53,3 +53,19 @@ class CobnutTestCase(TestCase):
         assert cache(
             1, data=[1, 4, 5], extra='extra_data'
         ) != response
+
+    def test_complex_data(self):
+        data = [
+            {
+                "id": 580,
+                "encrypt": "zOzdQcztWnDgb1A2UjfeQw==",
+                "status": None
+            },
+            {
+                "id": 581,
+                "encrypt": "nAo3CnQE2S2YqQUdc77kvA==",
+                "status": True
+            }
+        ]
+        self.cobnut.set(key='complex_data', data=data, expire=1)
+        assert self.cobnut.get(key='complex_data') == data
