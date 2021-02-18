@@ -23,8 +23,10 @@ from cobnut import Cobnut, RedisModel
 cobnut = Cobnut(redis_connection=RedisModel(host="localhost"))
 cobnut.set(key='mykey', data='mydata')
 cobnut.get(key='mykey')
-#Response: mydata
-cobnut.delete(key='test')
-cobnut.get(key='test')
-#Response : None
+# Response: mydata
+
+cobnut.delete(key='mykey')
+cobnut.get(key='mykey')
+# Response: None
+
 ```
