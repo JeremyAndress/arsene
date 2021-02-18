@@ -1,7 +1,7 @@
 from json import loads
 from typing import Optional
 from redis import Redis
-from .data_convert import set_data
+from .data_convert import set_data, object_hook
 
 
 class RedisConnection():
@@ -43,7 +43,7 @@ class RedisConnection():
             return data_json['data']
 
         elif data_json['type'] in ['list', 'tuple', 'dict']:
-            return loads(data_json['data'])
+            return loads(data_json['data'], object_hook=object_hook)
 
     def delete(self, *, key: str):
         self.client.delete(key)
