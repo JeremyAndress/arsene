@@ -8,7 +8,7 @@ from cobnut import Cobnut, RedisModel
 class CobnutTestCase(TestCase):
 
     def setUp(self):
-        self.cobnut = Cobnut(redis_connection=RedisModel(host="localhost"))
+        self.cobnut = Cobnut(redis_connection=RedisModel(host='localhost'))
 
     def test_set(self):
         self.cobnut.set(key='test', data='test')
@@ -41,7 +41,7 @@ class CobnutTestCase(TestCase):
             expire=2
         )
         def cache(pk, data='data', extra='extra_data'):
-            return {'now': datetime.now().strftime("%m/%d/%Y, %H:%M:%S")}
+            return {'now': datetime.now().strftime('%m/%d/%Y, %H:%M:%S')}
         response = cache(1, data=[1, 4, 5], extra='extra_data')
 
         assert cache(
@@ -57,15 +57,18 @@ class CobnutTestCase(TestCase):
     def test_complex_data(self):
         data = [
             {
-                "id": 580,
-                "encrypt": "zOzdQcztWnDgb1A2UjfeQw==",
-                "status": None
+                'id': 580,
+                'encrypt': 'zOzdQcztWnDgb1A2UjfeQw==',
+                'status': None,
+                'date': datetime.now()
             },
             {
-                "id": 581,
-                "encrypt": "nAo3CnQE2S2YqQUdc77kvA==",
-                "status": True
+                'id': 581,
+                'encrypt': 'nAo3CnQE2S2YqQUdc77kvA==',
+                'status': True,
+                'date': datetime(1999, 2, 3)
             }
         ]
-        self.cobnut.set(key='complex_data', data=data, expire=1)
-        assert self.cobnut.get(key='complex_data') == data
+        self.cobnut.set(key='complex_data', data=data, expire=3)
+        time.sleep(2)
+        assert self.cobnut.get(key='complex_data') is not None
