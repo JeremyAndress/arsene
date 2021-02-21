@@ -1,6 +1,10 @@
 # Cobnut
+[![Test](https://github.com/JeremyAndress/cobnut/actions/workflows/python-app.yml/badge.svg)](https://github.com/JeremyAndress/cobnut/actions/workflows/python-app.yml) [![license](https://img.shields.io/github/license/peaceiris/actions-gh-pages.svg)](LICENSE)
 
-Simple cache to make your life easy
+Simple cache management to make your life easy.
+
+### Requirements 
+- Python 3.6+ 
 
 ### Installation
 ```sh
