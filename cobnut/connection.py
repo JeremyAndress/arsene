@@ -40,7 +40,7 @@ class RedisConnection():
         self.status = True
 
     def set(self, *, key: str, expire: Optional[int] = None, data):
-        data_convert = set_data(
+        data_convert = self.set_data(
             data, serializable=self.json_serial
         )
         self.client.set(key, data_convert, ex=expire)
@@ -51,7 +51,7 @@ class RedisConnection():
 
         data_convert = self.client.get(key).decode('utf-8')
         data_json = loads(data_convert)
-        return resolve_data(
+        return self.resolve_data(
             data_json, object_hook=self.object_hook
         )
 

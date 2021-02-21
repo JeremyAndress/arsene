@@ -2,6 +2,7 @@ from functools import wraps
 from typing import Dict, List, Tuple, Optional, Union
 from cobnut.schemas.redis import RedisModel
 from cobnut.key_builder import generate_key
+from cobnut.exceptions import ValidationBroker
 from cobnut.logger import logger
 
 
@@ -18,7 +19,7 @@ class Cobnut():
         if self.redis_connection:
             store = self.redis_conn()
         else:
-            raise Exception('You need a broker')
+            raise ValidationBroker
         return store
 
     def redis_conn(self):
