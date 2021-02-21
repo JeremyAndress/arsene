@@ -1,20 +1,31 @@
 from json import loads
-from typing import Optional
+from typing import Optional, Callable
 from redis import Redis
-from .data_convert import set_data, object_hook
+from .data_convert import (
+    set_data, resolve_data,
+    object_hook, date_serial
+)
 
 
 class RedisConnection():
     def __init__(
         self, *, host: str, port: int = 6379,
         db=0, password: str = None,
-        socket_connect_timeout: int = 1
+        socket_connect_timeout: int = 1,
+        set_data: Callable = set_data,
+        resolve_data: Callable = resolve_data,
+        object_hook: Callable = object_hook,
+        json_serial: Callable = date_serial
     ):
+        self.db = db
         self.host = host
         self.port = port
-        self.db = db
-        self.password = password
         self.status = False
+        self.password = password
+        self.set_data = set_data
+        self.object_hook = object_hook
+        self.json_serial = json_serial
+        self.resolve_data = resolve_data
         self.socket_connect_timeout = socket_connect_timeout
         self.client = self.create_client()
 
@@ -29,7 +40,9 @@ class RedisConnection():
         self.status = True
 
     def set(self, *, key: str, expire: Optional[int] = None, data):
-        data_convert = set_data(data)
+        data_convert = set_data(
+            data, serializable=self.json_serial
+        )
         self.client.set(key, data_convert, ex=expire)
 
     def get(self, *, key: str):
@@ -38,12 +51,9 @@ class RedisConnection():
 
         data_convert = self.client.get(key).decode('utf-8')
         data_json = loads(data_convert)
-
-        if data_json['type'] in ['str', 'int', 'float', 'bytes']:
-            return data_json['data']
-
-        elif data_json['type'] in ['list', 'tuple', 'dict']:
-            return loads(data_json['data'], object_hook=object_hook)
+        return resolve_data(
+            data_json, object_hook=self.object_hook
+        )
 
     def delete(self, *, key: str):
         self.client.delete(key)

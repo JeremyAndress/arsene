@@ -1,8 +1,9 @@
-from json import dumps
+from json import dumps, loads
 from datetime import date, datetime
+from typing import Callable, Optional
 
 
-def json_serial(obj):
+def date_serial(obj):
     if isinstance(obj, (datetime, date)):
         return obj.isoformat()
     raise TypeError(f'Type {type(obj)} not serializable')
@@ -15,7 +16,7 @@ def object_hook(obj):
     return obj
 
 
-def set_data(data, *, serializable=json_serial):
+def set_data(data, *, serializable=date_serial):
     data_convert = {
         'type': type(data).__name__,
         'data': None
@@ -31,3 +32,11 @@ def set_data(data, *, serializable=json_serial):
     ):
         data_convert['data'] = data
     return dumps(data_convert, default=serializable)
+
+
+def resolve_data(json_data, *, object_hook: Optional[Callable] = object_hook):
+    if json_data['type'] in ['str', 'int', 'float', 'bytes']:
+        return json_data['data']
+
+    elif json_data['type'] in ['list', 'tuple', 'dict']:
+        return loads(json_data['data'], object_hook=object_hook)

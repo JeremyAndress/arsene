@@ -1,5 +1,5 @@
 from functools import wraps
-from typing import Union, Dict, List, Tuple, Optional
+from typing import Dict, List, Tuple, Optional, Union
 from cobnut.schemas.redis import RedisModel
 from cobnut.key_builder import generate_key
 from cobnut.logger import logger
@@ -7,7 +7,7 @@ from cobnut.logger import logger
 
 class Cobnut():
     def __init__(
-        self, *, redis_connection: Union[RedisModel, None] = None,
+        self, *, redis_connection: Optional[RedisModel] = None,
         global_expire: Optional[int] = None
     ):
         self.global_expire = global_expire
