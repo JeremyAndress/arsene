@@ -1,3 +1,3 @@
 import logging
-
-logger = logging.getLogger("cobnut")
+logging.basicConfig(level=logging.DEBUG)
+logger = logging.getLogger('cobnut')

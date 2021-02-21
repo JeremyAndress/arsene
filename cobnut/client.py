@@ -2,6 +2,7 @@ from functools import wraps
 from typing import Union, Dict, List, Tuple, Optional
 from cobnut.schemas.redis import RedisModel
 from cobnut.key_builder import generate_key
+from cobnut.logger import logger
 
 
 class Cobnut():
@@ -67,8 +68,10 @@ class Cobnut():
                 )
                 key_data = self.get(key=name)
                 if key_data:
+                    logger.info(f'Find key data {name}')
                     return key_data
                 elif key_data is None:
+                    logger.info(f'Save key data {name}')
                     ex = expire if expire else self.global_expire
                     response = func(*args, **kwargs)
                     self.set(key=name, data=response, expire=ex)
