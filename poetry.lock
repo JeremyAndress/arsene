@@ -75,6 +75,17 @@ pycodestyle = "*"
 six = "*"
 
 [[package]]
+name = "flake8-quotes"
+version = "3.2.0"
+description = "Flake8 lint for quotes."
+category = "dev"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+flake8 = "*"
+
+[[package]]
 name = "importlib-metadata"
 version = "3.4.0"
 description = "Read metadata from Python packages"
@@ -265,7 +276,7 @@ redis = ["redis"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.6"
-content-hash = "68febc9af7176808ed6132c98ad73a12f2287a5e3da35729f56851923711f2c2"
+content-hash = "a41343d5fccdf794db4bd049322d0ad1ae49bf96aab4ed7ea4f9dfa4202faf65"
 
 [metadata.files]
 atomicwrites = [
@@ -295,6 +306,9 @@ flake8-polyfill = [
 flake8-print = [
     {file = "flake8-print-4.0.0.tar.gz", hash = "sha256:5afac374b7dc49aac2c36d04b5eb1d746d72e6f5df75a6ecaecd99e9f79c6516"},
     {file = "flake8_print-4.0.0-py3-none-any.whl", hash = "sha256:6c0efce658513169f96d7a24cf136c434dc711eb00ebd0a985eb1120103fe584"},
+]
+flake8-quotes = [
+    {file = "flake8-quotes-3.2.0.tar.gz", hash = "sha256:3f1116e985ef437c130431ac92f9b3155f8f652fda7405ac22ffdfd7a9d1055e"},
 ]
 importlib-metadata = [
     {file = "importlib_metadata-3.4.0-py3-none-any.whl", hash = "sha256:ace61d5fc652dc280e7b6b4ff732a9c2d40db2c0f92bc6cb74e07b73d53a1771"},
