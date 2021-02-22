@@ -10,8 +10,13 @@
 <a href="https://github.com/JeremyAndress/arsene/actions/workflows/python-app.yml" target="_blank">
     <img src="https://github.com/JeremyAndress/arsene/actions/workflows/python-app.yml/badge.svg" alt="Test">
 </a>
+
 <a href="LICENSE" target="_blank">
     <img src="https://img.shields.io/github/license/peaceiris/actions-gh-pages.svg" alt="MIT">
+</a>
+
+<a href="https://pypi.python.org/pypi/arsene" target="_blank">
+    <img src="https://badge.fury.io/py/arsene.svg" alt="pypy">
 </a>
 </p>
 
