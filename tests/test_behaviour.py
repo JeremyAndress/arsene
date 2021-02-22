@@ -2,32 +2,32 @@ import time
 import inspect
 from datetime import datetime
 from unittest import TestCase
-from cobnut import Cobnut, RedisModel
+from arsene import Arsene, RedisModel
 
 
-class CobnutTestCase(TestCase):
+class ArseneTestCase(TestCase):
 
     def setUp(self):
-        self.cobnut = Cobnut(redis_connection=RedisModel(host='localhost'))
+        self.arsene = Arsene(redis_connection=RedisModel(host='localhost'))
 
     def test_set(self):
-        self.cobnut.set(key='test', data='test')
-        assert self.cobnut.get(key='test') == 'test'
-        self.cobnut.delete(key='test')
-        assert self.cobnut.get(key='test') is None
+        self.arsene.set(key='test', data='test')
+        assert self.arsene.get(key='test') == 'test'
+        self.arsene.delete(key='test')
+        assert self.arsene.get(key='test') is None
 
     def test_set_expire(self):
-        self.cobnut.set(key='test', data='test_expire', expire=1)
-        assert self.cobnut.get(key='test') == 'test_expire'
+        self.arsene.set(key='test', data='test_expire', expire=1)
+        assert self.arsene.get(key='test') == 'test_expire'
         time.sleep(1)
-        assert self.cobnut.get(key='test') is None
+        assert self.arsene.get(key='test') is None
 
     def test_decorator_params(self):
         def without_decorator(data):
             pass
         data = list(inspect.signature(without_decorator).parameters.keys())
 
-        @self.cobnut.clean_key(key='test')
+        @self.arsene.clean_key(key='test')
         def get_decorator(data):
             pass
         assert list(
@@ -35,7 +35,7 @@ class CobnutTestCase(TestCase):
         ) == data
 
     def test_decorator_return(self):
-        @self.cobnut.cache(
+        @self.arsene.cache(
             key='test_cache', check_kwargs_params=True,
             check_args_params=True, kwargs_list=['data'],
             expire=2
@@ -69,6 +69,6 @@ class CobnutTestCase(TestCase):
                 'date': datetime(1999, 2, 3)
             }
         ]
-        self.cobnut.set(key='complex_data', data=data, expire=3)
+        self.arsene.set(key='complex_data', data=data, expire=3)
         time.sleep(2)
-        assert self.cobnut.get(key='complex_data') is not None
+        assert self.arsene.get(key='complex_data') is not None

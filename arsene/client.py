@@ -1,12 +1,12 @@
 from functools import wraps
 from typing import Dict, List, Tuple, Optional, Union
-from cobnut.schemas.redis import RedisModel
-from cobnut.key_builder import generate_key
-from cobnut.exceptions import ValidationBroker
-from cobnut.logger import logger
+from arsene.schemas.redis import RedisModel
+from arsene.key_builder import generate_key
+from arsene.exceptions import ValidationBroker
+from arsene.logger import logger
 
 
-class Cobnut():
+class Arsene():
     def __init__(
         self, *, redis_connection: Optional[RedisModel] = None,
         global_expire: Optional[int] = None
@@ -23,7 +23,7 @@ class Cobnut():
         return store
 
     def redis_conn(self):
-        from cobnut.connection import RedisConnection
+        from arsene.connection import RedisConnection
         r = RedisConnection(
             host=self.redis_connection.host
         )

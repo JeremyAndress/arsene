@@ -1,3 +1,3 @@
 import logging
 logging.basicConfig(level=logging.DEBUG)
-logger = logging.getLogger('cobnut')
+logger = logging.getLogger('arsene')

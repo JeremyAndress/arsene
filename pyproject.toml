@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "cobnut"
+name = "arsene"
 version = "0.1.4"
 description = "Easy data cache management"
 readme = "README.md"
