@@ -1,5 +1,5 @@
-# Cobnut
-[![Test](https://github.com/JeremyAndress/cobnut/actions/workflows/python-app.yml/badge.svg)](https://github.com/JeremyAndress/cobnut/actions/workflows/python-app.yml) [![license](https://img.shields.io/github/license/peaceiris/actions-gh-pages.svg)](LICENSE)
+# Arsene
+[![Test](https://github.com/JeremyAndress/arsene/actions/workflows/python-app.yml/badge.svg)](https://github.com/JeremyAndress/arsene/actions/workflows/python-app.yml) [![license](https://img.shields.io/github/license/peaceiris/actions-gh-pages.svg)](LICENSE)
 
 Simple cache management to make your life easy.
 
@@ -8,29 +8,29 @@ Simple cache management to make your life easy.
 
 ### Installation
 ```sh
-pip install cobnut
+pip install arsene
 ```
 
 ### Quick Start
 For the tutorial, you must install redis as dependency
 
 ```sh
-pip install cobnut[redis]
+pip install arsene[redis]
 ```
 
 
-The simplest Cobnut setup looks like this:
+The simplest Arsene setup looks like this:
 
 ```python
-from cobnut import Cobnut, RedisModel
+from arsene import Arsene, RedisModel
 
-cobnut = Cobnut(redis_connection=RedisModel(host="localhost"))
-cobnut.set(key='mykey', data='mydata')
-cobnut.get(key='mykey')
+arsene = Arsene(redis_connection=RedisModel(host="localhost"))
+arsene.set(key='mykey', data='mydata')
+arsene.get(key='mykey')
 # Response: mydata
 
-cobnut.delete(key='mykey')
-cobnut.get(key='mykey')
+arsene.delete(key='mykey')
+arsene.get(key='mykey')
 # Response: None
 
 ```
