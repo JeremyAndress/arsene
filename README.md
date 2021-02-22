@@ -1,7 +1,21 @@
-# Arsene
-[![Test](https://github.com/JeremyAndress/arsene/actions/workflows/python-app.yml/badge.svg)](https://github.com/JeremyAndress/arsene/actions/workflows/python-app.yml) [![license](https://img.shields.io/github/license/peaceiris/actions-gh-pages.svg)](LICENSE)
+<p align="center">
+  <img width="320" height="320" src="docs/arsene.png" alt='Arsene'>
+</p>
 
-Simple cache management to make your life easy.
+<p align="center">
+<em>Simple cache management to make your life easy.</em>
+</p>
+
+<p align="center">
+<a href="https://github.com/JeremyAndress/arsene/actions/workflows/python-app.yml" target="_blank">
+    <img src="https://github.com/JeremyAndress/arsene/actions/workflows/python-app.yml/badge.svg" alt="Test">
+</a>
+<a href="LICENSE" target="_blank">
+    <img src="https://img.shields.io/github/license/peaceiris/actions-gh-pages.svg" alt="MIT">
+</a>
+</p>
+
+---
 
 ### Requirements 
 - Python 3.6+ 
