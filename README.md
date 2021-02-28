@@ -41,15 +41,35 @@ pip install arsene[redis]
 The simplest Arsene setup looks like this:
 
 ```python
+from datetime import datetime
 from arsene import Arsene, RedisModel
 
-arsene = Arsene(redis_connection=RedisModel(host="localhost"))
-arsene.set(key='mykey', data='mydata')
-arsene.get(key='mykey')
-# Response: mydata
+redis = RedisModel(host='localhost')
 
-arsene.delete(key='mykey')
-arsene.get(key='mykey')
+arsene = Arsene(redis_connection=redis)
+
+
+@arsene.cache(key='my_secret_key', expire=2)
+def get_user():
+    return {
+        'username': 'jak',
+        'last_session': datetime(year=1999, month=2, day=3)
+    }
+
+
+# return and writes response to the cache
+get_user()
+
+# reads response to the cache
+get_user()
+# Response: {'username': 'jak', 'last_session': datetime.datetime(1999, 2, 3, 0, 0)}
+
+# reads response to the cache
+arsene.get(key='my_secret_key')
+
+# delete key to the cache
+arsene.delete(key='my_secret_key')
+arsene.get(key='my_secret_key')
 # Response: None
 
 ```
