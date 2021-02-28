@@ -1,6 +1,7 @@
 from json import loads
 from typing import Optional, Callable
 from redis import Redis
+from arsene.schemas.redis import RedisModel
 from .data_convert import (
     set_data, resolve_data,
     object_hook, date_serial
@@ -9,30 +10,23 @@ from .data_convert import (
 
 class RedisConnection():
     def __init__(
-        self, *, host: str, port: int = 6379,
-        db=0, password: str = None,
-        socket_connect_timeout: int = 1,
-        set_data: Callable = set_data,
-        resolve_data: Callable = resolve_data,
-        object_hook: Callable = object_hook,
-        json_serial: Callable = date_serial
+        self, *, schema: RedisModel,
+        set_data: Optional[Callable] = set_data,
+        resolve_data: Optional[Callable] = resolve_data,
+        object_hook: Optional[Callable] = object_hook,
+        json_serial: Optional[Callable] = date_serial
     ):
-        self.db = db
-        self.host = host
-        self.port = port
+        self.schema = schema
         self.status = False
-        self.password = password
         self.set_data = set_data
         self.object_hook = object_hook
         self.json_serial = json_serial
         self.resolve_data = resolve_data
-        self.socket_connect_timeout = socket_connect_timeout
         self.client = self.create_client()
 
     def create_client(self):
         return Redis(
-            host=self.host, port=self.port, db=self.db, password=self.password,
-            socket_connect_timeout=self.socket_connect_timeout
+            **self.schema.dict()
         )
 
     def test_connection(self):

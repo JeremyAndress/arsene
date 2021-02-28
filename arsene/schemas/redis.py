@@ -7,7 +7,8 @@ class RedisModel(BaseModel):
     port: int = 6379
     db: Any = 0
     password: Optional[str] = None
-    socket_connect_timeout: int = 1
+    max_connections: Optional[int] = None
+    socket_connect_timeout: Optional[int] = None
 
     class Config:
         orm_mode = True

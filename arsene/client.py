@@ -25,7 +25,7 @@ class Arsene():
     def redis_conn(self):
         from arsene.connection import RedisConnection
         r = RedisConnection(
-            host=self.redis_connection.host
+            schema=self.redis_connection
         )
         r.test_connection()
         return r
