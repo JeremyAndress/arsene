@@ -2,19 +2,15 @@ from json import loads
 from typing import Optional, Callable
 from redis import Redis
 from arsene.schemas.redis import RedisModel
-from .data_convert import (
-    set_data, resolve_data,
-    object_hook, date_serial
-)
 
 
 class RedisConnection():
     def __init__(
         self, *, schema: RedisModel,
-        set_data: Optional[Callable] = set_data,
-        resolve_data: Optional[Callable] = resolve_data,
-        object_hook: Optional[Callable] = object_hook,
-        json_serial: Optional[Callable] = date_serial
+        set_data: Callable,
+        resolve_data: Callable,
+        object_hook: Callable,
+        json_serial: Callable
     ):
         self.schema = schema
         self.status = False

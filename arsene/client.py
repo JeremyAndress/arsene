@@ -1,16 +1,30 @@
 from functools import wraps
-from typing import Dict, List, Tuple, Optional, Union
+from typing import (
+    Dict, List, Tuple, Optional, Union, Callable
+)
 from arsene.schemas.redis import RedisModel
 from arsene.key_builder import generate_key
 from arsene.exceptions import ValidationBroker
+from arsene.data_convert import (
+    set_data, resolve_data,
+    object_hook, date_serial
+)
 from arsene.logger import logger
 
 
 class Arsene():
     def __init__(
         self, *, redis_connection: Optional[RedisModel] = None,
-        global_expire: Optional[int] = None
+        global_expire: Optional[int] = None,
+        set_data: Callable = set_data,
+        resolve_data: Callable = resolve_data,
+        object_hook: Callable = object_hook,
+        json_serial: Callable = date_serial
     ):
+        self.set_data = set_data
+        self.object_hook = object_hook
+        self.json_serial = json_serial
+        self.resolve_data = resolve_data
         self.global_expire = global_expire
         self.redis_connection = redis_connection
         self.store = self.create_store()
@@ -25,7 +39,11 @@ class Arsene():
     def redis_conn(self):
         from arsene.connection import RedisConnection
         r = RedisConnection(
-            schema=self.redis_connection
+            schema=self.redis_connection,
+            resolve_data=self.resolve_data,
+            object_hook=self.object_hook,
+            json_serial=self.json_serial,
+            set_data=self.set_data
         )
         r.test_connection()
         return r
