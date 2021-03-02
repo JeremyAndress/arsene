@@ -7,6 +7,13 @@ authors = ["JeremyAndress <jeremysilvasilva@gmail.com>"]
 license = "MIT"
 homepage = "https://github.com/JeremyAndress/cobnut"
 repository = "https://github.com/JeremyAndress/cobnut"
+keywords = ["arsene", "cache", "decorator"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Information Technology",
+    "Intended Audience :: System Administrators",
+    "Intended Audience :: Developers"
+]
 
 [tool.poetry.dependencies]
 python = "^3.6"
