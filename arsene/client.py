@@ -2,6 +2,8 @@ from functools import wraps
 from typing import (
     Dict, List, Tuple, Optional, Union, Callable
 )
+
+from arsene.logger import logger
 from arsene.schemas.redis import RedisModel
 from arsene.key_builder import generate_key
 from arsene.exceptions import ValidationBroker
@@ -9,10 +11,9 @@ from arsene.data_convert import (
     set_data, resolve_data,
     object_hook, date_serial
 )
-from arsene.logger import logger
 
 
-class Arsene():
+class Arsene:
     def __init__(
         self, *, redis_connection: Optional[RedisModel] = None,
         global_expire: Optional[int] = None,
@@ -20,7 +21,7 @@ class Arsene():
         resolve_data: Callable = resolve_data,
         object_hook: Callable = object_hook,
         json_serial: Callable = date_serial
-    ):
+    ) -> None:
         self.set_data = set_data
         self.object_hook = object_hook
         self.json_serial = json_serial
@@ -37,7 +38,7 @@ class Arsene():
         return store
 
     def redis_conn(self):
-        from arsene.connection import RedisConnection
+        from arsene.connection.redis import RedisConnection
         r = RedisConnection(
             schema=self.redis_connection,
             resolve_data=self.resolve_data,
@@ -51,15 +52,15 @@ class Arsene():
     def set(self, *, key: str, expire: Optional[int] = None, data: Union[
         str, int, Dict, List, float,
         bytes, Tuple
-    ]):
+    ]) -> None:
         ex = expire if expire else self.global_expire
         self.store.set(key=key, expire=ex, data=data)
 
     def get(self, *, key: str):
         return self.store.get(key=key)
 
-    def delete(self, *, key: str):
-        return self.store.delete(key=key)
+    def delete(self, *, key: str) -> None:
+        self.store.delete(key=key)
 
     def clean_key(self, *, key: str):
         self.delete(key=key)

@@ -1,35 +1,31 @@
 from json import loads
-from typing import Optional, Callable
 from redis import Redis
+from typing import Optional, Any
+
 from arsene.schemas.redis import RedisModel
+from arsene.connection.base import Base
 
 
-class RedisConnection():
+class RedisConnection(Base):
     def __init__(
         self, *, schema: RedisModel,
-        set_data: Callable,
-        resolve_data: Callable,
-        object_hook: Callable,
-        json_serial: Callable
-    ):
+        **base_kwargs: Any
+    ) -> None:
         self.schema = schema
         self.status = False
-        self.set_data = set_data
-        self.object_hook = object_hook
-        self.json_serial = json_serial
-        self.resolve_data = resolve_data
         self.client = self.create_client()
+        super().__init__(**base_kwargs)
 
     def create_client(self):
         return Redis(
             **self.schema.dict()
         )
 
-    def test_connection(self):
+    def test_connection(self) -> None:
         self.client.ping()
         self.status = True
 
-    def set(self, *, key: str, expire: Optional[int] = None, data):
+    def set(self, *, key: str, expire: Optional[int] = None, data) -> None:
         data_convert = self.set_data(
             data, serializable=self.json_serial
         )
@@ -45,5 +41,5 @@ class RedisConnection():
             data_json, object_hook=self.object_hook
         )
 
-    def delete(self, *, key: str):
+    def delete(self, *, key: str) -> None:
         self.client.delete(key)
