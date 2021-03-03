@@ -1,6 +1,7 @@
 from functools import wraps
 from typing import (
-    Dict, List, Tuple, Optional, Union, Callable
+    Dict, List, Tuple, Optional, Union,
+    Callable, Any
 )
 
 from arsene.logger import logger
@@ -17,10 +18,10 @@ class Arsene:
     def __init__(
         self, *, redis_connection: Optional[RedisModel] = None,
         global_expire: Optional[int] = None,
-        set_data: Callable = set_data,
-        resolve_data: Callable = resolve_data,
-        object_hook: Callable = object_hook,
-        json_serial: Callable = date_serial
+        set_data: Callable[[Any], Any] = set_data,
+        resolve_data: Callable[[Any], Any] = resolve_data,
+        object_hook: Callable[[Any], Any] = object_hook,
+        json_serial: Callable[[Any], Any] = date_serial
     ) -> None:
         self.set_data = set_data
         self.object_hook = object_hook
@@ -30,15 +31,15 @@ class Arsene:
         self.redis_connection = redis_connection
         self.store = self.create_store()
 
-    def create_store(self):
+    def create_store(self) -> Any:
         if self.redis_connection:
             store = self.redis_conn()
         else:
             raise ValidationBroker
         return store
 
-    def redis_conn(self):
-        from arsene.connection.redis import RedisConnection
+    def redis_conn(self) -> Any:
+        from arsene.connection.redis_client import RedisConnection
         r = RedisConnection(
             schema=self.redis_connection,
             resolve_data=self.resolve_data,
@@ -81,7 +82,7 @@ class Arsene:
             @wraps(func)
             def wrapper(*args, **kwargs):
                 name = generate_key(
-                    key=key, args=args, kwargs=kwargs,
+                    key=key, deeper_args=args, deeper_kwargs=kwargs,
                     kwargs_list=kwargs_list, check_params=check_params,
                     check_args_params=check_args_params,
                     check_kwargs_params=check_kwargs_params
