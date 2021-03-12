@@ -17,26 +17,8 @@ def object_hook(obj):
 
 
 def set_data(data, *, serializable=date_serial):
-    data_convert = {
-        'type': type(data).__name__,
-        'data': None
-    }
-    if (
-        isinstance(data, list) or isinstance(data, dict) or
-        isinstance(data, tuple)
-    ):
-        data_convert['data'] = dumps(data, default=serializable)
-    elif (
-        isinstance(data, str) or isinstance(data, int) or
-        isinstance(data, float) or isinstance(data, bytes)
-    ):
-        data_convert['data'] = data
-    return dumps(data_convert, default=serializable)
+    return dumps(data, default=serializable)
 
 
 def resolve_data(json_data, *, object_hook: Optional[Callable] = object_hook):
-    if json_data['type'] in ['str', 'int', 'float', 'bytes']:
-        return json_data['data']
-
-    elif json_data['type'] in ['list', 'tuple', 'dict']:
-        return loads(json_data['data'], object_hook=object_hook)
+    return loads(json_data, object_hook=object_hook)

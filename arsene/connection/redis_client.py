@@ -1,4 +1,3 @@
-from json import loads
 from redis import Redis
 from typing import Optional, Any
 
@@ -36,9 +35,8 @@ class RedisConnection(Base):
             return None
 
         data_convert = self.client.get(key).decode('utf-8')
-        data_json = loads(data_convert)
         return self.resolve_data(
-            data_json, object_hook=self.object_hook
+            data_convert, object_hook=self.object_hook
         )
 
     def delete(self, *, key: str) -> None:
