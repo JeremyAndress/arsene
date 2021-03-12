@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="320" height="320" src="docs/arsene.png" alt='Arsene'>
+  <img width="320" height="320" src="https://github.com/JeremyAndress/arsene/blob/master/docs/arsene.png?raw=true" alt='Arsene'>
 </p>
 
 <p align="center">
