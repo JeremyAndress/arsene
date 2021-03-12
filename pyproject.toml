@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "arsene"
-version = "0.1.5"
+version = "0.1.6"
 description = "Easy data cache management"
 readme = "README.md"
 authors = ["JeremyAndress <jeremysilvasilva@gmail.com>"]
