@@ -23,14 +23,14 @@
 ---
 
 ### Requirements 
-- Python 3.6+ 
+- Python🐍 3.6+
 
 ### Installation
 ```sh
 pip install arsene
 ```
 
-### Quick Start
+### Quick Start 🚀
 For the tutorial, you must install redis as dependency
 
 ```sh
