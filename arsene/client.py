@@ -92,12 +92,12 @@ class Arsene:
                 )
                 key_data = self.get(key=name)
                 if key_data:
-                    self.logger.info(f'Find key data {name}')
+                    self.logger.debug(f'Find key: {name} data: {key_data}')
                     return key_data
                 elif key_data is None:
-                    self.logger.info(f'Save key data {name}')
                     ex = expire if expire else self.global_expire
                     response = func(*args, **kwargs)
+                    self.logger.debug(f'Save key: {name} data: {key_data} expire: {ex}')
                     self.set(key=name, data=response, expire=ex)
                     return response
             return wrapper
