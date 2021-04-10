@@ -23,15 +23,16 @@ class Arsene:
         resolve_data: Callable[[Any], Any] = resolve_data,
         object_hook: Callable[[Any], Any] = object_hook,
         json_serial: Callable[[Any], Any] = date_serial,
-        logger: Logger = logger
+        catch_errors: bool = False, logger: Logger = logger
     ) -> None:
+        self.logger = logger
         self.set_data = set_data
         self.object_hook = object_hook
         self.json_serial = json_serial
+        self.catch_errors = catch_errors
         self.resolve_data = resolve_data
         self.global_expire = global_expire
         self.redis_connection = redis_connection
-        self.logger = logger
         self.store = self.create_store()
 
     def create_store(self) -> Any:
@@ -58,13 +59,31 @@ class Arsene:
         bytes, Tuple
     ]) -> None:
         ex = expire if expire else self.global_expire
-        self.store.set(key=key, expire=ex, data=data)
+        try:
+            self.store.set(key=key, expire=ex, data=data)
+        except Exception as e:
+            self.logger.error(f'Arsene error {e}')
+            if not self.catch_errors:
+                raise
 
-    def get(self, *, key: str):
-        return self.store.get(key=key)
+    def get(self, *, key: str) -> Union[
+        str, int, Dict, List, float,
+        bytes, Tuple, None
+    ]:
+        try:
+            return self.store.get(key=key)
+        except Exception as e:
+            self.logger.error(f'Arsene error {e}')
+            if not self.catch_errors:
+                raise
 
     def delete(self, *, key: str) -> None:
-        self.store.delete(key=key)
+        try:
+            self.store.delete(key=key)
+        except Exception as e:
+            self.logger.error(f'Arsene error {e}')
+            if not self.catch_errors:
+                raise
 
     def clean_key(self, *, key: str) -> Any:
         self.delete(key=key)
@@ -92,12 +111,12 @@ class Arsene:
                 )
                 key_data = self.get(key=name)
                 if key_data:
-                    self.logger.debug(f'Find key: {name} data: {key_data}')
+                    self.logger.info(f'Find key: {name} data: {key_data}')
                     return key_data
                 elif key_data is None:
                     ex = expire if expire else self.global_expire
                     response = func(*args, **kwargs)
-                    self.logger.debug(f'Save key: {name} data: {key_data} expire: {ex}')
+                    self.logger.info(f'Save key: {name} data: {key_data} expire: {ex}')
                     self.set(key=name, data=response, expire=ex)
                     return response
             return wrapper
